@@ -1,0 +1,40 @@
+pipeline {
+    agent any
+
+    tools {
+        jdk 'JDK8' 
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+       
+                git 'https://github.com/2003santhosh/jenkins.git'
+            }
+        }
+
+        stage('Compile') {
+            steps {
+                script {
+           
+                    sh '''
+                        cd src
+                        javac -d ../bin *.java
+                    '''
+                }
+            }
+        }
+
+        stage('Archive') {
+            steps {
+                archiveArtifacts artifacts: 'bin/**/*.class', allowEmptyArchive: true
+            }
+        }
+    }
+
+    post {
+        always {
+      
+        }
+    }
+}
